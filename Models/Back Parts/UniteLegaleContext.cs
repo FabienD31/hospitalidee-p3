@@ -8,8 +8,8 @@ namespace Hospitalidée_CRM_Back_End.Models
 {
     public class UniteLegaleContext : DbContext
     {
-        public virtual DbSet<Etablissement> Etablissement { get; set; }
-        public virtual DbSet<UniteLegale> UniteLegale { get; set; }
+        public virtual DbSet<Etablissement> etablissements { get; set; }
+        public virtual DbSet<UniteLegale> uniteLegale { get; set; }
         public UniteLegaleContext(DbContextOptions<UniteLegaleContext> options)
         : base(options)
         {

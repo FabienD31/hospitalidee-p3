@@ -41,29 +41,18 @@ namespace Hospitalidée_CRM_Back_End.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult> PostNewForm([FromBody]UniteLegaleJson formEntry)
+        public IActionResult PostNewForm([FromBody]UniteLegale formEntry)
         {
-            List<Etablissement> etablissement = new List<Etablissement>();
-            UniteLegale uniteLegale = new UniteLegale();
-            
-            if (ModelState.IsValid)
-            {
-                
-                uniteLegale.prenom_usuel = formEntry.prenom_usuel;
-                uniteLegale.nom = formEntry.nom;
-                uniteLegale.nomenclature_activite_principale = formEntry.nomenclature_activite_principale;
-                uniteLegale.denomination = formEntry.denomination;
-                uniteLegale.siren = formEntry.siren;
-                /*uniteLegale.etablissement = (IEnumerable<Etablissement>)formEntry.etablissements;*/
-                _context.UniteLegale.Add(uniteLegale);
-                await _context.SaveChangesAsync();
-            }
-            return new JsonResult(uniteLegale);
+
+            _context.uniteLegale.Add(formEntry);
+            _context.SaveChanges();
+            return new JsonResult(formEntry);
 
         }
-        public IQueryable<UniteLegale> Get()
+        public IQueryable<UniteLegale> GetUniteLegaleBDD()
         {
-            return _context.UniteLegale;
+            
+            return _context.uniteLegale;
         }
         private UniteLegaleJson ConvertIntoResponse(GovernmentApiJson jsonGovernment)
         {
@@ -78,7 +67,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             
             foreach(EtablissementJson etablissement in jsonGovernment.unite_legale.etablissements)
             {
-                string apeCode = "85";
+                string apeCode = "";
                 jsonGovernment.unite_legale.etablissements.ToList();
                 
                 if(etablissement.activite_principale.Contains(apeCode))
