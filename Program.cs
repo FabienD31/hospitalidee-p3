@@ -15,36 +15,7 @@ namespace Hospitalidée_CRM_Back_End
     {
         public static void Main(string[] args)
         {
-            AddDatabase();
             CreateHostBuilder(args).Build().Run();
-        }
-        private static void AddDatabase()
-        {
-            using (var context = new UniteLegaleContext())
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-
-                UniteLegale unite = new UniteLegale()
-                {
-                    nom = "test ",
-                    prenom_usuel = "coucou",
-                    etablissement = new List<Etablissement>()
-                    {
-                        new Etablissement {denomination_usuelle = "coucou"},
-                        new Etablissement { denomination_usuelle = "coucou2"}
-                        
-                    }
-                    
-                };
-
-                
-               
-                context.AddRange(unite);
-                context.SaveChanges();
-
-
-            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
