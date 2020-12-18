@@ -10,11 +10,9 @@ namespace Hospitalidée_CRM_Back_End.Models
     {
         public virtual DbSet<Etablissement> Etablissement { get; set; }
         public virtual DbSet<UniteLegale> UniteLegale { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public UniteLegaleContext(DbContextOptions<UniteLegaleContext> options)
+        : base(options)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=LOCALHOST\SQLEXPRESS;Database=Hospitalidee-Backen;Integrated Security=True");
         }
     }
 }

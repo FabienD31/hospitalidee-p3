@@ -6,15 +6,23 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Hospitalidée_CRM_Back_End.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Hospitalidée_CRM_Back_End.Controllers
 {
     [ApiController]
-    [Route("Siren/{siren?}")]
+    [Route("Siren")]
     public class SirenController : ControllerBase
     {
+        private readonly UniteLegaleContext _context;
+        public SirenController(UniteLegaleContext context)
+        {
+            _context = context;
+        }
+        
+        [Route("{siren?}")]
         [HttpGet]
         public UniteLegaleJson GetEtablissement(string? siren)
         {
@@ -32,6 +40,31 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             return uniteLegaleJson;
 
         }
+        [HttpPost]
+        public async Task<ActionResult> PostNewForm([FromBody]UniteLegaleJson formEntry)
+        {
+            List<Etablissement> etablissement = new List<Etablissement>();
+            UniteLegale uniteLegale = new UniteLegale();
+            
+            if (ModelState.IsValid)
+            {
+                
+                uniteLegale.prenom_usuel = formEntry.prenom_usuel;
+                uniteLegale.nom = formEntry.nom;
+                uniteLegale.nomenclature_activite_principale = formEntry.nomenclature_activite_principale;
+                uniteLegale.denomination = formEntry.denomination;
+                uniteLegale.siren = formEntry.siren;
+                /*uniteLegale.etablissement = (IEnumerable<Etablissement>)formEntry.etablissements;*/
+                _context.UniteLegale.Add(uniteLegale);
+                await _context.SaveChangesAsync();
+            }
+            return new JsonResult(uniteLegale);
+
+        }
+        public IQueryable<UniteLegale> Get()
+        {
+            return _context.UniteLegale;
+        }
         private UniteLegaleJson ConvertIntoResponse(GovernmentApiJson jsonGovernment)
         {
             UniteLegaleJson uniteLegaleJson = new UniteLegaleJson();
@@ -45,7 +78,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             
             foreach(EtablissementJson etablissement in jsonGovernment.unite_legale.etablissements)
             {
-                string apeCode = "86";
+                string apeCode = "85";
                 jsonGovernment.unite_legale.etablissements.ToList();
                 
                 if(etablissement.activite_principale.Contains(apeCode))
@@ -54,9 +87,6 @@ namespace Hospitalidée_CRM_Back_End.Controllers
                     uniteLegaleJson.etablissements = listEtablissementAPE;
                 }
             }
-
-            
-
             return uniteLegaleJson;
         }
 
