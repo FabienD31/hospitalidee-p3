@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hospitalidée_CRM_Back_End.Actions;
 using Hospitalidée_CRM_Back_End.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,8 @@ namespace Hospitalidée_CRM_Back_End
             services.AddDbContext<UniteLegaleContext>(option =>
             
             option.UseSqlServer("Data Source = LOCALHOST\\SQLEXPRESS; Database = Hospitalidee - Backen; Integrated Security = True"));
+            services.AddScoped<CreateUniteLegale>();
+            services.AddScoped<RetrieveEtablissement>();
             services.AddControllers();
             services.AddCors(options =>
             {
