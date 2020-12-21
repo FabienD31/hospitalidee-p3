@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Hospitalidée_CRM_Back_End.Actions;
 using Hospitalidée_CRM_Back_End.Models;
+using Hospitalidée_CRM_Back_End.Models.Request;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,9 +19,13 @@ namespace Hospitalidée_CRM_Back_End.Controllers
     public class SirenController : ControllerBase
     {
         private readonly UniteLegaleContext _context;
-        public SirenController(UniteLegaleContext context)
+        private readonly CreateUniteLegale _createUniteLegale;
+        private readonly RetrieveEtablissement _retrieveEtablissement;
+        public SirenController(UniteLegaleContext context, CreateUniteLegale createUniteLegale, RetrieveEtablissement retrieveEtablissement)
         {
+            _createUniteLegale = createUniteLegale;
             _context = context;
+            _retrieveEtablissement = retrieveEtablissement;
         }
         
         [Route("{siren?}")]
@@ -31,7 +37,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
                 return null;
             }
             
-            GovernmentApiJson jsonGovernment = RetrieveEtablissementFromGovernment(siren);
+            GovernmentApiJson jsonGovernment =_retrieveEtablissement.RetrieveEtablissementFromGovernment(siren);
             if(jsonGovernment == null)
             {
                 return null;
@@ -41,30 +47,12 @@ namespace Hospitalidée_CRM_Back_End.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult> PostNewForm([FromBody]UniteLegaleJson formEntry)
+        public IActionResult PostNewForm([FromBody]UniteLegaleCreationRequest formEntry)
         {
-            List<Etablissement> etablissement = new List<Etablissement>();
-            UniteLegale uniteLegale = new UniteLegale();
-            
-            if (ModelState.IsValid)
-            {
-                
-                uniteLegale.prenom_usuel = formEntry.prenom_usuel;
-                uniteLegale.nom = formEntry.nom;
-                uniteLegale.nomenclature_activite_principale = formEntry.nomenclature_activite_principale;
-                uniteLegale.denomination = formEntry.denomination;
-                uniteLegale.siren = formEntry.siren;
-                /*uniteLegale.etablissement = (IEnumerable<Etablissement>)formEntry.etablissements;*/
-                _context.UniteLegale.Add(uniteLegale);
-                await _context.SaveChangesAsync();
-            }
-            return new JsonResult(uniteLegale);
+            _createUniteLegale.Create(formEntry);
+            return Ok();
+        }
 
-        }
-        public IQueryable<UniteLegale> Get()
-        {
-            return _context.UniteLegale;
-        }
         private UniteLegaleJson ConvertIntoResponse(GovernmentApiJson jsonGovernment)
         {
             UniteLegaleJson uniteLegaleJson = new UniteLegaleJson();
@@ -90,28 +78,6 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             return uniteLegaleJson;
         }
 
-        readonly HttpClient client = new HttpClient();
 
-        private GovernmentApiJson RetrieveEtablissementFromGovernment(string siren)
-        {
-            // Call asynchronous network methods in a try/catch block to handle exceptions.
-            try
-            {
-                HttpResponseMessage response = client.GetAsync("https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/" + siren).Result;
-                response.EnsureSuccessStatusCode();
-                string responseBody = response.Content.ReadAsStringAsync().Result;
-                GovernmentApiJson jsonGovernmentApi = JsonSerializer.Deserialize<GovernmentApiJson>(responseBody);
-                
-                return jsonGovernmentApi;
-
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-                return null;
-            }
-
-        }
     }
 }
