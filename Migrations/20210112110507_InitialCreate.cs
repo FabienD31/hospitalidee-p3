@@ -11,7 +11,7 @@ namespace Hospitalidée_CRM_Back_End.Migrations
                 name: "UniteLegale",
                 columns: table => new
                 {
-                    uniteLegaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UniteLegaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     prenom_usuel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     siren = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -20,14 +20,14 @@ namespace Hospitalidée_CRM_Back_End.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UniteLegale", x => x.uniteLegaleId);
+                    table.PrimaryKey("PK_UniteLegale", x => x.UniteLegaleId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Etablissement",
+                name: "Etablissements",
                 columns: table => new
                 {
-                    etablissementId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EtablissementId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     denomination_usuelle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     siret = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     activite_principale = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -36,29 +36,29 @@ namespace Hospitalidée_CRM_Back_End.Migrations
                     libelle_voie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     code_postal = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     libelle_commune = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    unite_legaleuniteLegaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UniteLegaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Etablissement", x => x.etablissementId);
+                    table.PrimaryKey("PK_Etablissements", x => x.EtablissementId);
                     table.ForeignKey(
-                        name: "FK_Etablissement_UniteLegale_unite_legaleuniteLegaleId",
-                        column: x => x.unite_legaleuniteLegaleId,
+                        name: "FK_Etablissements_UniteLegale_UniteLegaleId",
+                        column: x => x.UniteLegaleId,
                         principalTable: "UniteLegale",
-                        principalColumn: "uniteLegaleId",
+                        principalColumn: "UniteLegaleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Etablissement_unite_legaleuniteLegaleId",
-                table: "Etablissement",
-                column: "unite_legaleuniteLegaleId");
+                name: "IX_Etablissements_UniteLegaleId",
+                table: "Etablissements",
+                column: "UniteLegaleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Etablissement");
+                name: "Etablissements");
 
             migrationBuilder.DropTable(
                 name: "UniteLegale");

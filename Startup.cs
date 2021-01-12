@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hospitalidée_CRM_Back_End.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Hospitalidée_CRM_Back_End
 {
@@ -28,8 +20,8 @@ namespace Hospitalidée_CRM_Back_End
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UniteLegaleContext>(option =>
-            
-            option.UseSqlServer("Data Source = LOCALHOST\\SQLEXPRESS; Database = Hospitalidee - Backen; Integrated Security = True"));
+                option.UseSqlServer(Configuration["ConnectionString"]));
+            services.AddScoped<APIClient>(c => new APIClient(Configuration["SiretAPIUrl"]));
             services.AddControllers();
             services.AddCors(options =>
             {
@@ -46,8 +38,7 @@ namespace Hospitalidée_CRM_Back_End
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UniteLegaleContext context)
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -61,7 +52,7 @@ namespace Hospitalidée_CRM_Back_End
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
