@@ -5,7 +5,7 @@ namespace Hospitalidée_CRM_Back_End.Models
 {
     public class UniteLegale
     {
-        public Guid uniteLegaleId { get; set; }
+        public Guid UniteLegaleId { get; set; }
         public string prenom_usuel { get; set; }
         public string nom { get; set; }
         public string siren { get; set; }
