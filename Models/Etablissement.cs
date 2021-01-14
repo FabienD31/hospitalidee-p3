@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Hospitalidée_CRM_Back_End.Models
 {
-    public class EtablissementJson
+    public class Etablissement
     {
+        public Guid EtablissementId { get; set; }
         public string denomination_usuelle { get; set; }
         public string siret { get; set; }
         public string activite_principale { get; set; }
