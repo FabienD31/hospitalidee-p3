@@ -24,13 +24,5 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             _context = injectedContext;
             _client = injectedClient;
         }
-        
-        [Route("{siren}")]
-        [HttpGet]
-        public UniteLegale GetUniteLegale(string siren)
-        {
-            UniteLegale uniteLegale= _client.GetUniteLegale(siren);
-            return uniteLegale;
-        }
     }
 }

@@ -22,7 +22,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
 
         [HttpPost]
         [Route("UniteLegale")]
-        public IActionResult SaveUniteLegale([FromBody]UniteLegale uniteLegaleForm)
+        public IActionResult SaveUniteLegale([FromBody] UniteLegale uniteLegaleForm)
         {
             UniteLegale existingUniteLegale = _context.UniteLegale.FirstOrDefault(u => u.siren == uniteLegaleForm.siren);
             if (existingUniteLegale != null)
@@ -37,5 +37,24 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("{siren}")]
+        public IActionResult DeleteUniteLegale(String siren)
+        {
+            UniteLegale existingUniteLegale = _context.UniteLegale.Include(u => u.etablissements)
+                                                                  .FirstOrDefault(u => u.siren == siren);
+            
+            if (existingUniteLegale == null)
+            {
+                return BadRequest(); 
+            }
+
+            _context.Remove(existingUniteLegale);
+            _context.SaveChanges();
+            return Ok();
+
+        }
+
     }
 }
