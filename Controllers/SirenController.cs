@@ -27,10 +27,21 @@ namespace Hospitalidée_CRM_Back_End.Controllers
         
         [Route("{siren}")]
         [HttpGet]
-        public UniteLegale GetUniteLegale(string siren)
+        public IActionResult GetUniteLegale(string siren)
         {
-            UniteLegale uniteLegale= _client.GetUniteLegale(siren);
-            return uniteLegale;
+            UniteLegale uniteLegale = _client.GetUniteLegale(siren);
+            List<Etablissement> etablissements = new List<Etablissement>(_client.GetUniteLegale(siren).etablissements
+                                                     .Where(e => e.activite_principale
+                                                     .StartsWith("86") || e.activite_principale.StartsWith("96")));
+            if (etablissements != null)
+            {
+                return Ok(uniteLegale);
+            }
+            else
+            {
+                return NoContent();
+            }
+            
         }
     }
 }
