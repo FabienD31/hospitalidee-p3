@@ -37,5 +37,24 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("UniteLegale")]
+        public IActionResult DeleteUniteLegale([FromBody] UniteLegale uniteLegaleForm)
+        {
+            UniteLegale existingUniteLegale = _context.UniteLegale.FirstOrDefault(u => u.siren == uniteLegaleForm.siren);
+            if (existingUniteLegale != null)
+            {
+                _context.Remove(existingUniteLegale);
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return NoContent();
+            }
+
+        }
+
     }
 }
