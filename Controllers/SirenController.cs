@@ -24,24 +24,5 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             _context = injectedContext;
             _client = injectedClient;
         }
-        
-        [Route("{siren}")]
-        [HttpGet]
-        public IActionResult GetUniteLegale(string siren)
-        {
-            UniteLegale uniteLegale = _client.GetUniteLegale(siren);
-            List<Etablissement> etablissements = new List<Etablissement>(_client.GetUniteLegale(siren).etablissements
-                                                     .Where(e => e.activite_principale
-                                                     .StartsWith("86") || e.activite_principale.StartsWith("96")));
-            if (etablissements != null)
-            {
-                return Ok(uniteLegale);
-            }
-            else
-            {
-                return NoContent();
-            }
-            
-        }
     }
 }
