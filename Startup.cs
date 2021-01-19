@@ -28,7 +28,7 @@ namespace Hospitalidée_CRM_Back_End
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.AllowAnyOrigin()
+                        builder.WithOrigins(Configuration["Cors:AllowedHosts"])
                                .AllowAnyMethod()
                                .AllowAnyHeader();
                     });
@@ -39,12 +39,18 @@ namespace Hospitalidée_CRM_Back_End
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UniteLegaleContext context)
         {
             context.Database.Migrate();
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            if (env.EnvironmentName != "Staging")
+            {
+                app.UseHttpsRedirection();
+                app.UseHsts();
+            }
+
             app.UseCors();
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
