@@ -52,50 +52,5 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             _context.SaveChanges();
             return Ok();
         }
-
-/*        [HttpDelete]
-        [Route("{siren}")]
-        public IActionResult DeleteUniteLegale(String siren)
-        {
-            UniteLegale existingUniteLegale = _context.UniteLegale.Include(u => u.etablissements)
-                                                                  .FirstOrDefault(u => u.siren == siren);
-                                                                     
-            if (existingUniteLegale == null)
-            {
-                return BadRequest(); 
-            }
-
-            _context.RemoveRange(existingUniteLegale.etablissements);
-            _context.Remove(existingUniteLegale);
-            _context.SaveChanges();
-            return Ok();
-
-        }*/
-        [HttpDelete]
-        [Route("{siret}")]
-        public IActionResult DeleteEtablissement(String siret)
-        {
-            string siren = siret.Substring(0, 9);
-            Etablissement existingEtablissement = _context.Etablissements.FirstOrDefault(e => e.siret == siret);
-            UniteLegale existingUniteLegale = _context.UniteLegale.Include(u => u.etablissements)
-                                                                  .FirstOrDefault(u => u.siren == siren);
-            if (existingEtablissement == null)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                _context.Remove(existingEtablissement);
-                _context.SaveChanges();
-                if (!existingUniteLegale.etablissements.Any())
-                {
-                    _context.Remove(existingUniteLegale);
-                    _context.SaveChanges();
-                }
-                return Ok();
-            }
-
-
-        }
     }
 }
