@@ -16,12 +16,9 @@ namespace Hospitalidée_CRM_Back_End.Controllers
     [Route("Siren")]
     public class SirenController : ControllerBase
     {
-        private readonly UniteLegaleContext _context;
         private readonly APIClient _client;
-        public SirenController(UniteLegaleContext injectedContext, 
-                               APIClient injectedClient)
+        public SirenController(APIClient injectedClient)
         {
-            _context = injectedContext;
             _client = injectedClient;
         }
         
