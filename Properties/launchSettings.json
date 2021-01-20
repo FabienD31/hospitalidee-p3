@@ -12,13 +12,19 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "siren",
+      "launchUrl": "registered",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "Kestrel (Staging)": {
       "commandName": "Project",
+<<<<<<< HEAD
+=======
+      "launchBrowser": true,
+      "launchUrl": "registered",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+>>>>>>> c603335184af1dbe655a432b2be081315f36bd26
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       },
