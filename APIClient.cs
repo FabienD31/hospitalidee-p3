@@ -25,7 +25,7 @@ namespace Hospitalidée_CRM_Back_End
         public UniteLegale GetUniteLegale(String siren)
         {
             HttpResponseMessage response = _httpClient.GetAsync($"{_baseUrl}/unites_legales/{siren}").Result;
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException(response.ReasonPhrase);
             }
@@ -35,6 +35,7 @@ namespace Hospitalidée_CRM_Back_End
             UniteLegale uniteLegale = System.Text.Json.JsonSerializer.Deserialize<UniteLegale>(token.ToString());
 
             return uniteLegale;
+
         }
 
 

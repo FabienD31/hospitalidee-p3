@@ -34,10 +34,10 @@ namespace Hospitalidée_CRM_Back_End.Controllers
                 Etablissement selectedEtablissement = uniteLegale.etablissements.FirstOrDefault(etablissement => etablissement.siret == siret);
                 if (selectedEtablissement != null)
                 {
-/*                    if (selectedEtablissement.siret.Any())
+                    if (_context.Etablissements.Any(e => e.siret == selectedEtablissement.siret))
                     {
                         return BadRequest("Ce siret est déjà utilisé");
-                    }*/
+                    }
 
                     etablissementBySiret.Add(selectedEtablissement);
                 }
@@ -47,7 +47,8 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             UniteLegale existingUniteLegale = _context.UniteLegale.Include(u=>u.etablissements).FirstOrDefault(u => u.siren == uniteLegale.siren);
             if (existingUniteLegale != null)
             {
-                return BadRequest("Ce siren est déjà utilisé");
+                _context.Remove(existingUniteLegale);
+                _context.Add(uniteLegale);
             }
             else
             {

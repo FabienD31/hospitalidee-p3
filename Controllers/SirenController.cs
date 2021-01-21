@@ -24,15 +24,11 @@ namespace Hospitalidée_CRM_Back_End.Controllers
         
         [Route("{siren}")]
         [HttpGet]
-        public IActionResult GetUniteLegale(string siren)
+        public UniteLegale GetUniteLegale(string siren)
         {
             
             UniteLegale uniteLegale = _client.GetUniteLegale(siren);
-            if (uniteLegale == null)
-            {
-                return BadRequest("Ce numéro de siren n'existe pas");
-            }
-                return Ok(uniteLegale);
+            return uniteLegale;
         }
 
     }
