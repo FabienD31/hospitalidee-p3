@@ -31,19 +31,23 @@ namespace Hospitalidée_CRM_Back_End.Controllers
             List<Etablissement> etablissementBySiret = new List<Etablissement>();
             foreach(string siret in sirets)
             {
-                Etablissement selectedEtablissement = uniteLegale.etablissements.First(etablissement => etablissement.siret == siret);
+                Etablissement selectedEtablissement = uniteLegale.etablissements.FirstOrDefault(etablissement => etablissement.siret == siret);
                 if (selectedEtablissement != null)
                 {
+/*                    if (selectedEtablissement.siret.Any())
+                    {
+                        return BadRequest("Ce siret est déjà utilisé");
+                    }*/
+
                     etablissementBySiret.Add(selectedEtablissement);
                 }
 
             }
             uniteLegale.etablissements = etablissementBySiret;
-            UniteLegale existingUniteLegale = _context.UniteLegale.FirstOrDefault(u => u.siren == uniteLegale.siren);
+            UniteLegale existingUniteLegale = _context.UniteLegale.Include(u=>u.etablissements).FirstOrDefault(u => u.siren == uniteLegale.siren);
             if (existingUniteLegale != null)
             {
-                _context.Remove(existingUniteLegale);
-                _context.Add(uniteLegale);
+                return BadRequest("Ce siren est déjà utilisé");
             }
             else
             {
