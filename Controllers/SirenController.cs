@@ -26,6 +26,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
         [HttpGet]
         public UniteLegale GetUniteLegale(string siren)
         {
+            
             UniteLegale uniteLegale = _client.GetUniteLegale(siren);
             return uniteLegale;
         }

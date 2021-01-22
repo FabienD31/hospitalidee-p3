@@ -18,6 +18,7 @@ namespace Hospitalidée_CRM_Back_End.Controllers
         {
             _context = injectedContext;
         }
+
         [HttpDelete]
         [Route("UniteLegale/{siren}")]
         public IActionResult DeleteUniteLegale(String siren)
