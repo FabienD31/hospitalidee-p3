@@ -24,12 +24,21 @@ namespace Hospitalidée_CRM_Back_End.Controllers
         
         [Route("{siren}")]
         [HttpGet]
-        public UniteLegale GetUniteLegale(string siren)
+
+        public IActionResult GetUniteLegale(string siren)
         {
-            
             UniteLegale uniteLegale = _client.GetUniteLegale(siren);
-            return uniteLegale;
-        }
+
+            if (uniteLegale != null)
+            {
+                return Ok(uniteLegale);
+            }
+            else
+            {
+                return BadRequest(StatusCode(404));
+            }
+
+        } 
 
     }
 }
