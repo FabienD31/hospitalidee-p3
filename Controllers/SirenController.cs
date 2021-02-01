@@ -16,21 +16,29 @@ namespace Hospitalidée_CRM_Back_End.Controllers
     [Route("Siren")]
     public class SirenController : ControllerBase
     {
-        private readonly UniteLegaleContext _context;
         private readonly APIClient _client;
-        public SirenController(UniteLegaleContext injectedContext, 
-                               APIClient injectedClient)
+        public SirenController(APIClient injectedClient)
         {
-            _context = injectedContext;
             _client = injectedClient;
         }
         
         [Route("{siren}")]
         [HttpGet]
-        public UniteLegale GetUniteLegale(string siren)
+
+        public IActionResult GetUniteLegale(string siren)
         {
-            UniteLegale uniteLegale= _client.GetUniteLegale(siren);
-            return uniteLegale;
-        }
+            UniteLegale uniteLegale = _client.GetUniteLegale(siren);
+
+            if (uniteLegale != null)
+            {
+                return Ok(uniteLegale);
+            }
+            else
+            {
+                return BadRequest(StatusCode(404));
+            }
+
+        } 
+
     }
 }
