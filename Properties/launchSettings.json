@@ -3,7 +3,7 @@
     "Hospitalidee CRM (Staging)": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:80;https://localhost:443",
+      "applicationUrl": "http://0.0.0.0:80;https://0.0.0.0:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging"
       }
