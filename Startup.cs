@@ -20,7 +20,7 @@ namespace Hospitalidée_CRM_Back_End
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UniteLegaleContext>(option =>
-                option.UseSqlServer(Configuration["ConnectionString"]));
+                option.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
             services.AddScoped<APIClient>(c => new APIClient(Configuration["SiretAPIUrl"]));
             services.AddControllers();
             services.AddCors(options =>
